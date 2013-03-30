@@ -1,0 +1,8 @@
+.deck-container { color: white; }
+.deck-container strong { color: #8BC84B; }
+.deck-container li pre { margin-bottom: 0; }
+.figure { float: left; padding-right: 12px; }
+.cl { clear: left; }
+.deck-container .slide h3 { text-shadow: 0 0 5px #fff, 0 0 2px #fff; }
+h3 strong, h4 strong, red { color: red; font-weight: bold; }
+h4 { text-align: center; }

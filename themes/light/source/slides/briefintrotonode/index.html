@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->  <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>A Brief Introduction to Node.js</title>
+
+    <meta name="description" content="A Brief Introduction to Node.js">
+    <meta name="author" content="inetfuture">
+    <meta name="viewport" content="width=1024, user-scalable=no">
+
+    <!-- Core and extension CSS files -->
+    <link rel="stylesheet" href="../../deck.js/core/deck.core.css">
+    <link rel="stylesheet" href="../../deck.js/extensions/goto/deck.goto.css">
+    <link rel="stylesheet" href="../../deck.js/extensions/menu/deck.menu.css">
+    <link rel="stylesheet" href="../../deck.js/extensions/navigation/deck.navigation.css">
+    <link rel="stylesheet" href="../../deck.js/extensions/status/deck.status.css">
+    <link rel="stylesheet" href="../../deck.js/extensions/hash/deck.hash.css">
+    <link rel="stylesheet" href="../../deck.js/extensions/scale/deck.scale.css">
+
+    <!-- Style theme. More available in /themes/style/ or create your own. -->
+    <link rel="stylesheet" href="../../deck.js/themes/style/neon.css">
+
+    <!-- Transition theme. More available in /themes/transition/ or create your own. -->
+    <link rel="stylesheet" href="../../deck.js/themes/transition/horizontal-slide.css">
+
+    <script src="../../deck.js/modernizr.custom.js"></script>
+</head>
+
+<body class="deck-container">
+<link rel="stylesheet" href="style.css">
+
+
+
+
+<!-- Begin slides -->
+<section class="slide" id="title">
+    <h1>A Brief Introduction to Node.js</h1>
+    <h3 style="position: absolute; right: 20%; bottom: 20%;">Aaron Wang 2013/3/25</h3>
+</section>
+
+<section class="slide" id="before">
+    <h2>Before we begin, when you are developing a browser-based web application</h2>
+    <ul>
+        <li>
+            Do you know what are the main components of modern browsers?
+        </li>
+        <li>
+            Have you ever wondered how does it works?
+        </li>
+        <li class="slide">
+            <p><a href="http://taligarsiel.com/Projects/howbrowserswork1.htm">How browsers work - behind the scenes of
+                modern web browsers</a></p>
+            <div class="figure">
+                <img src="../introtonode/images/browser_structure.png" alt="browser structure"/>
+            </div>
+            <p></p>
+            <p>Rendering engine: Webkit(Safari, Chrome, <strong>Opera</strong>), Gecko(Firefox)...</p>
+            <p>JavaScript interpreter: V8(Chrome), *Monkey(Firefox)...</p>
+            <p>Browser side JavaScript = ECMAScript Implementation + DOM + BOM</p>
+        </li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2></h2>
+    <ul>
+        <li>And, what JavaScript looks like in your mind?</li>
+        <li class="slide">It runs on browser, handles dom, validates form input...</li>
+        <li class="slide">
+            <p>The headache of browser compatibility problems...</p>
+            <div class="figure">
+                <img src="../introtonode/images/browsers.jpg" alt="browsers"/>
+            </div>
+        </li>
+        <li class="slide cl">jquery...</li>
+        <li class="slide">But JavaScript is more, what if we <strong>extract a JavaScript interpreter from browser and
+            put it on the server</strong>?</li>
+        <li class="slide">Chrome V8, for instance</li>
+        <li class="slide">That's what Node.js does, but Node.js isn't that simple... You'll see!</li>
+    </ul>
+</section>
+
+<section class="slide" id="agenda">
+    <h2>Agenda</h2>
+    <ul>
+        <li>What Is Node.js</li>
+        <li>What's It For</li>
+        <li>Why Node.js</li>
+        <li>Brief History</li>
+        <li>Quick Start</li>
+        <li>Core Modules</li>
+        <li>NPM</li>
+        <li>A Simple Chat Room</li>
+        <li>Real Use Cases in Production</li>
+    </ul>
+</section>
+
+<section class="slide" id="whatIs">
+    <h2>What Is Node.js</h2>
+    <ul>
+        <li>A <strong>server-side JavaScript</strong> platform based on Chrome V8</li>
+        <li><strong>Single-threaded, event-driven</strong> programming environment</li>
+        <li>Performing <strong>Non-blocking(Asynchronous) I/O</strong></li>
+    </ul>
+</section>
+
+<section class="slide" id="whatFor">
+    <h2>What's It For</h2>
+    <ul>
+        <li>It's <strong>Goal</strong> is to provide an easy way to build <strong>scalable</strong> network programs</li>
+        <li>
+            Can be used as:
+            <ul>
+                <li>Web Server</li>
+                <li>TCP Server</li>
+                <li>Proxy Server</li>
+                <li>Anything that has to deal with high I/O</li>
+            </ul>
+        </li>
+    </ul>
+</section>
+
+<section class="slide" id="why">
+    <h2>Already so many technologies out there, Why Node.js</h2>
+    <ul>
+        <li>Asynchronous I/O is better for high I/O application</li>
+        <li>Single-threaded and event-driven is better than multi-threaded</li>
+        <li>Based on Chrom V8, Fast!</li>
+        <li>Lightweight, easy to learn</li>
+        <li>One language for front-end and back-end</li>
+        <li>Cross platform, Mac, Linux, Windows</li>
+        <li>Open Source, MIT license</li>
+        <li>Active community, over 25, 000 modules</li>
+    </ul>
+</section>
+
+<section class="slide" id="history">
+    <h2>Brief History</h2>
+    <ul>
+        <li>1995, Netscape, LiveScript</li>
+        <li>LiveScript => JavaScript, Java <-> JavaScript, 雷锋 <-> 雷峰塔</li>
+        <li>Microsoft, JScript, IE3</li>
+        <li>1996, Standardization, ECMAScript</li>
+        <li>2004 ~ ?, The Second Browser War, JavaScript engine performance revolution</li>
+        <li>2009, CommonJS</li>
+        <li>2009, Ryan Dahl, web.js</li>
+        <li>2010, Joyent</li>
+        <li>2011, Microsoft</li>
+        <li>Now, v0.10.1</li>
+    </ul>
+</section>
+
+<section class="slide" id="start">
+    <h2>Quick Start</h2>
+    <h3>Install</h3>
+    <ul>
+        <li><a href="http://nodejs.org/download/">http://nodejs.org/download/</a>, select a proper version</li>
+    </ul>
+    <h3>A Basic Web Server</h3>
+    <ul>
+        <li>webServer.js:
+<pre><code>var http = require('http');
+http.createServer(function (req, res) {
+    res.end('Hello world!');
+}).listen(3000);</code></pre>
+        </li>
+        <li><strong>node</strong> webServer.js</li>
+    </ul>
+</section>
+
+    <section class="slide" id="start2">
+        <h3>Web Server With Routing</h3>
+        <ul>
+            <li><strong>npm</strong> install express</li>
+            <li>webServer2.js:
+    <pre><code>var express = require('express');
+    var app = express();
+    app.get('/hello', function (req, res) {
+        res.send('world');
+    });
+    app.get('/hi', function (req, res) {
+        res.send('Node.js');
+    });
+    app.listen(3000);</code></pre>
+            </li>
+            <li><strong>node</strong> webServer2.js</li>
+        </ul>
+    </section>
+
+<section class="slide" id="core">
+    <h2>Core Modules</h2>
+    <ul>
+        <li>Globals</li>
+        <li>Events</li>
+        <li>Stream</li>
+        <li>Net</li>
+        <li>HTTP</li>
+        <li>File System</li>
+    </ul>
+</section>
+
+<section class="slide" id="npm">
+    <h2>NPM</h2>
+    <ul>
+        <li>Node.js Package Manager</li>
+        <li><a href="https://npmjs.org/">https://npmjs.org/</a></li>
+        <li>Install a package: <strong>npm</strong> install package-name</li>
+        <li>Find a package in NPM repository: <strong>npm</strong> search package-name</li>
+        <li>Publish a package to NPM repository: <strong>npm</strong> publish tarball/folder</li>
+        <li>List packages: <strong>npm</strong> ls</li>
+        <li>Most starred packages: express, request, async, socket.io, mocha, underscore, grunt, redis, jade, connect...</li>
+    </ul>
+</section>
+
+<section class="slide" id="chat">
+    <h2>A Simple Chat Room</h2>
+    <h3>Socket.IO</h3>
+    <ul>
+        <li><strong>Socket.IO aims to make realtime apps possible in every browser and mobile device,
+            blurring the differences between the different transport mechanisms. It's care-free
+            realtime 100% in JavaScript.</strong></li>
+        <li>Supported transports:
+            <ul>
+                <li>WebSocket</li>
+                <li>Adobe Flash Socket</li>
+                <li>Ajax long polling</li>
+                <li>Ajax multipart streaming</li>
+                <li>Forever iframe</li>
+                <li>JSONP Polling</li>
+            </ul>
+        </li>
+    </ul>
+</section>
+
+<section class="slide" id="chat2">
+    <h2></h2>
+    <ul>
+        <li><a href="http://chatroomdemo.herokuapp.com/">http://chatroomdemo.herokuapp.com/</a></li>
+        <li><a href="https://github.com/inetfuture/node-demo">https://github.com/inetfuture/node-demo</a></li>
+    </ul>
+</section>
+
+<section class="slide" id="useCases">
+    <h2>Real Use Cases in Production</h2>
+    <ul>
+        <li><a href="http://developer.yahoo.com/blogs/ydn/posts/2011/11/yahoo-announces-cocktails-%E2%80%93-shaken-not-stirred/">Yahoo!</a>
+            Mojito, an environment-agnostic JavaScript web application framework, and Manhattan, a hosted
+            platform for Mojito-based applications.</li>
+        <li><a href="http://joyent.com/blog/ebay-chooses-node-js-as-the-runtime-stack-in-ql-io-a-data-retrieval-and-aggregation-gateway-for-http-apis">eBay</a>,
+            use node.js in a gateway for HTTP APIs</li>
+        <li><a href="http://www.infoq.com/news/2012/10/Ruby-on-Rails-Node-js-LinkedIn">LinkedIn</a>,
+            use node.js as the server interface for his mobile applications, replaced ruby</li>
+        <li><a href="http://journal.paul.querna.org/articles/2011/12/17/technology-cloud-monitoring/">RackSpace</a>,
+            its Cloud Monitoring is primarily written in Node.js, replaced python</li>
+        <li><a href="http://readwrite.com/2010/10/20/why-developers-should-pay-atte">LearnBoost</a>,
+            is running entirely on Node.js</li>
+        <li><a href="https://c9.io/site/node-js/">Cloud9 IDE</a>,
+            is running entirely on Node.js</li>
+        <li><a href="http://blog.fogcreek.com/the-trello-tech-stack/">Trello</a>,
+            is running entirely on Node.js</li>
+        <li>淘宝网</li>
+        <li>朋友网</li>
+        <li class="slide">推送宝</li>
+        <li class="slide"><a href="https://github.com/joyent/node/wiki/Projects,-Applications,-and-Companies-Using-Node">
+            More Projects, Applications, and Companies Using Node
+        </a></li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2>Tanks!</h2>
+</section>
+
+
+
+
+<!-- deck.navigation snippet -->
+<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+
+<!-- deck.status snippet -->
+<p class="deck-status">
+    <span class="deck-status-current"></span>
+    /
+    <span class="deck-status-total"></span>
+</p>
+
+<!-- deck.goto snippet -->
+<form action="../" method="get" class="goto-form">
+    <label for="goto-slide">Go to slide:</label>
+    <input type="text" name="slidenum" id="goto-slide" list="goto-datalist">
+    <datalist id="goto-datalist"></datalist>
+    <input type="submit" value="Go">
+</form>
+
+<!-- deck.hash snippet -->
+<a href="../" title="Permalink to this slide" class="deck-permalink">#</a>
+
+<script src="../../deck.js/jquery-1.7.2.min.js"></script>
+
+<!-- Deck Core and extensions -->
+<script src="../../deck.js/core/deck.core.js"></script>
+<script src="../../deck.js/extensions/hash/deck.hash.js"></script>
+<script src="../../deck.js/extensions/menu/deck.menu.js"></script>
+<script src="../../deck.js/extensions/goto/deck.goto.js"></script>
+<script src="../../deck.js/extensions/status/deck.status.js"></script>
+<script src="../../deck.js/extensions/navigation/deck.navigation.js"></script>
+<script src="../../deck.js/extensions/scale/deck.scale.js"></script>
+
+<!-- Initialize the deck -->
+<script>
+    $(function() {
+        $.deck('.slide');
+    });
+</script>
+
+</body>
+</html>
