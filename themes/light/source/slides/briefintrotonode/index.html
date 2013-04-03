@@ -40,7 +40,7 @@
 <!-- Begin slides -->
 <section class="slide" id="title">
     <h1>A Brief Introduction to Node.js</h1>
-    <h3 style="position: absolute; right: 20%; bottom: 20%;">Aaron Wang 2013/3/25</h3>
+    <h3 style="position: absolute; right: 20%; bottom: 15%;">Aaron Wang 2013/3/27</h3>
 </section>
 
 <section class="slide" id="before">
@@ -94,9 +94,10 @@
         <li>Brief History</li>
         <li>Quick Start</li>
         <li>Core Modules</li>
-        <li>NPM</li>
-        <li>A Simple Chat Room</li>
+        <li>CommonJS and NPM</li>
+        <li>RealTime App Demos</li>
         <li>Real Use Cases in Production</li>
+        <li>Node.js Is Not Silver Bullet</li>
     </ul>
 </section>
 
@@ -104,7 +105,7 @@
     <h2>What Is Node.js</h2>
     <ul>
         <li>A <strong>server-side JavaScript</strong> platform based on Chrome V8</li>
-        <li><strong>Single-threaded, event-driven</strong> programming environment</li>
+        <li><strong>Event-driven, single-threaded, </strong> programming environment</li>
         <li>Performing <strong>Non-blocking(Asynchronous) I/O</strong></li>
     </ul>
 </section>
@@ -113,13 +114,17 @@
     <h2>What's It For</h2>
     <ul>
         <li>It's <strong>Goal</strong> is to provide an easy way to build <strong>scalable</strong> network programs</li>
-        <li>
-            Can be used as:
+        <li>Primarily be used as:
             <ul>
                 <li>Web Server</li>
                 <li>TCP Server</li>
                 <li>Proxy Server</li>
                 <li>Anything that has to deal with high I/O</li>
+            </ul>
+        </li>
+        <li>Also:
+            <ul>
+                <li>Command Line Tool</li>
             </ul>
         </li>
     </ul>
@@ -128,19 +133,21 @@
 <section class="slide" id="why">
     <h2>Already so many technologies out there, Why Node.js</h2>
     <ul>
-        <li>Asynchronous I/O is better for high I/O application</li>
-        <li>Single-threaded and event-driven is better than multi-threaded</li>
+        <li>Asynchronous I/O is <strong>better</strong> for <strong>high I/O application</strong></li>
+        <li>Event-driven and single-threaded is <strong>faster</strong> than multi-threaded <strong>under high concurrency</strong></li>
         <li>Based on Chrom V8, Fast!</li>
-        <li>Lightweight, easy to learn</li>
-        <li>One language for front-end and back-end</li>
-        <li>Cross platform, Mac, Linux, Windows</li>
-        <li>Open Source, MIT license</li>
+        <li>Lightweight, easy to learn, <a href="http://nodejs.org/api/">api doc</a></li>
+        <li>Cross platform, Linux, Mac, SunOS, Windows</li>
+        <li><a href="https://github.com/joyent/node">Open Source</a>, MIT license</li>
         <li>Active community, over 25, 000 modules</li>
+        <li><strong>JavaScript!!!</strong> One language for front-end and back-end</li>
+        <li>...</li>
     </ul>
 </section>
 
 <section class="slide" id="history">
     <h2>Brief History</h2>
+    <h3><a href="images/javascript_history.png">JavaScript</a></h3>
     <ul>
         <li>1995, Netscape, LiveScript</li>
         <li>LiveScript => JavaScript, Java <-> JavaScript, 雷锋 <-> 雷峰塔</li>
@@ -148,6 +155,9 @@
         <li>1996, Standardization, ECMAScript</li>
         <li>2004 ~ ?, The Second Browser War, JavaScript engine performance revolution</li>
         <li>2009, CommonJS</li>
+    </ul>
+    <h3>Here Node.js comes</h3>
+    <ul>
         <li>2009, Ryan Dahl, web.js</li>
         <li>2010, Joyent</li>
         <li>2011, Microsoft</li>
@@ -159,38 +169,38 @@
     <h2>Quick Start</h2>
     <h3>Install</h3>
     <ul>
-        <li><a href="http://nodejs.org/download/">http://nodejs.org/download/</a>, select a proper version</li>
+        <li><a href="http://nodejs.org/download/">http://nodejs.org/download/</a>, select a proper binary version</li>
     </ul>
     <h3>A Basic Web Server</h3>
     <ul>
         <li>webServer.js:
 <pre><code>var http = require('http');
-http.createServer(function (req, res) {
+    http.createServer(function (req, res) {
     res.end('Hello world!');
-}).listen(3000);</code></pre>
+    }).listen(3000);</code></pre>
         </li>
         <li><strong>node</strong> webServer.js</li>
     </ul>
 </section>
 
-    <section class="slide" id="start2">
-        <h3>Web Server With Routing</h3>
-        <ul>
-            <li><strong>npm</strong> install express</li>
-            <li>webServer2.js:
+<section class="slide" id="start2">
+    <h3>Web Server With Routing</h3>
+    <ul>
+        <li><strong>npm</strong> install express</li>
+        <li>webServer2.js:
     <pre><code>var express = require('express');
-    var app = express();
-    app.get('/hello', function (req, res) {
+        var app = express();
+        app.get('/hello', function (req, res) {
         res.send('world');
-    });
-    app.get('/hi', function (req, res) {
+        });
+        app.get('/hi', function (req, res) {
         res.send('Node.js');
-    });
-    app.listen(3000);</code></pre>
-            </li>
-            <li><strong>node</strong> webServer2.js</li>
-        </ul>
-    </section>
+        });
+        app.listen(3000);</code></pre>
+        </li>
+        <li><strong>node</strong> webServer2.js</li>
+    </ul>
+</section>
 
 <section class="slide" id="core">
     <h2>Core Modules</h2>
@@ -205,26 +215,28 @@ http.createServer(function (req, res) {
 </section>
 
 <section class="slide" id="npm">
-    <h2>NPM</h2>
+    <h3>CommonJS</h3>
     <ul>
-        <li>Node.js Package Manager</li>
-        <li><a href="https://npmjs.org/">https://npmjs.org/</a></li>
-        <li>Install a package: <strong>npm</strong> install package-name</li>
-        <li>Find a package in NPM repository: <strong>npm</strong> search package-name</li>
-        <li>Publish a package to NPM repository: <strong>npm</strong> publish tarball/folder</li>
-        <li>List packages: <strong>npm</strong> ls</li>
-        <li>Most starred packages: express, request, async, socket.io, mocha, underscore, grunt, redis, jade, connect...</li>
+        <li> building up the <strong>JavaScript ecosystem</strong> for web servers, desktop and command line apps and in the browser</li>
+        <li>Modules(1.1.1), Packages(1.0)...</li>
+    </ul>
+    <h3>NPM</h3>
+    <ul>
+        <li>Node.js Package Manager, <a href="https://npmjs.org/">https://npmjs.org/</a></li>
+        <li>Install: <strong>npm</strong> install package-name</li>
+        <li>Publish: <strong>npm</strong> publish tarball/folder</li>
+        <li>Most starred packages: <strong>express, request, async, socket.io, mocha, underscore, grunt, redis, jade, connect...</strong></li>
+        <li class="slide">You'll need setup a http proxy in our company network: export http_proxy=http://host:port</li>
     </ul>
 </section>
 
-<section class="slide" id="chat">
-    <h2>A Simple Chat Room</h2>
-    <h3>Socket.IO</h3>
+<section class="slide" id="demo">
+    <h2>RealTime App Demos</h2>
+    <h3><a href="http://socket.io/">Socket.IO</a></h3>
     <ul>
-        <li><strong>Socket.IO aims to make realtime apps possible in every browser and mobile device,
-            blurring the differences between the different transport mechanisms. It's care-free
-            realtime 100% in JavaScript.</strong></li>
-        <li>Supported transports:
+        <li>Socket.IO aims to make <strong>realtime apps</strong> possible in <strong>every browser and mobile device</strong>,
+            it's care-free realtime <strong>100% in JavaScript</strong>.</li>
+        <li style="float: left; padding-right: 90px;">Supported transports:
             <ul>
                 <li>WebSocket</li>
                 <li>Adobe Flash Socket</li>
@@ -234,14 +246,31 @@ http.createServer(function (req, res) {
                 <li>JSONP Polling</li>
             </ul>
         </li>
+        <li>Simple ChatRoom with Socket.io:
+            <ul>
+                <li><a href="http://chatroomdemo.herokuapp.com/">http://chatroomdemo.herokuapp.com/</a></li>
+                <li><a href="https://github.com/inetfuture/node-demo">https://github.com/inetfuture/node-demo</a></li>
+            </ul>
+        </li>
     </ul>
 </section>
 
-<section class="slide" id="chat2">
-    <h2></h2>
+<section class="slide" id="demo2">
+    <h3><a href="http://meteor.com/main">Meteor</a> - <strong>A better way to build apps</strong></h3>
     <ul>
-        <li><a href="http://chatroomdemo.herokuapp.com/">http://chatroomdemo.herokuapp.com/</a></li>
-        <li><a href="https://github.com/inetfuture/node-demo">https://github.com/inetfuture/node-demo</a></li>
+        <li><strong>Clean, powerful data synchronization</strong><br />
+            Write your client code as if it were running on the server and had direct access to the database.
+            No more loading your data from REST endpoints.</li>
+        <li><strong>Live page updates</strong><br />
+            Just write your templates. They automatically update when data in the database changes.
+            No more boilerplate redraw code to write. </li>
+        <li>Based on <strong>Node.js</strong> and MongoDB.</li>
+        <li>Demo: <a href="http://minitrello.meteor.com/">Mini trello</a></li>
+        <div class="slide">
+            <h3>More analogous frameworks</h3>
+            <h3><a href="http://derbyjs.com/">Derby</a>, <a href="http://www.socketstream.org/">SocketStream</a>...
+                all based on <strong>Node.js</strong></h3>
+        </div>
     </ul>
 </section>
 
@@ -249,23 +278,21 @@ http.createServer(function (req, res) {
     <h2>Real Use Cases in Production</h2>
     <ul>
         <li><a href="http://developer.yahoo.com/blogs/ydn/posts/2011/11/yahoo-announces-cocktails-%E2%80%93-shaken-not-stirred/">Yahoo!</a>
-            Mojito, an environment-agnostic JavaScript web application framework, and Manhattan, a hosted
-            platform for Mojito-based applications.</li>
+            Mojito, a JavaScript web application framework, and hosted platform for its app</li>
         <li><a href="http://joyent.com/blog/ebay-chooses-node-js-as-the-runtime-stack-in-ql-io-a-data-retrieval-and-aggregation-gateway-for-http-apis">eBay</a>,
-            use node.js in a gateway for HTTP APIs</li>
+            gateway for HTTP APIs</li>
         <li><a href="http://www.infoq.com/news/2012/10/Ruby-on-Rails-Node-js-LinkedIn">LinkedIn</a>,
-            use node.js as the server interface for his mobile applications, replaced ruby</li>
+            gateway for its mobile applications, <strong>replaced ruby</strong></li>
         <li><a href="http://journal.paul.querna.org/articles/2011/12/17/technology-cloud-monitoring/">RackSpace</a>,
-            its Cloud Monitoring is primarily written in Node.js, replaced python</li>
+            Cloud Monitoring, <strong>replaced python</strong></li>
         <li><a href="http://readwrite.com/2010/10/20/why-developers-should-pay-atte">LearnBoost</a>,
-            is running entirely on Node.js</li>
-        <li><a href="https://c9.io/site/node-js/">Cloud9 IDE</a>,
-            is running entirely on Node.js</li>
-        <li><a href="http://blog.fogcreek.com/the-trello-tech-stack/">Trello</a>,
-            is running entirely on Node.js</li>
-        <li>淘宝网</li>
-        <li>朋友网</li>
-        <li class="slide">推送宝</li>
+            <a href="https://c9.io/site/node-js/">Cloud9 IDE</a>,
+            <a href="http://blog.fogcreek.com/the-trello-tech-stack/">Trello</a>,
+            are running entirely on Node.js</li>
+        <li><a href="http://www.infoq.com/cn/interviews/lk-nodejs-taobao">淘宝网</a>, MySQL代理, 淘宝指数</li>
+        <li><a href="http://wenku.baidu.com/view/b5ae3cc3bb4cf7ec4afed0a0.html">朋友网</a>, WebIM</li>
+        <li>网易, <a href="https://github.com/NetEase/pomelo">pomelo</a>, 游戏服务端框架</li>
+        <li class="slide"><a href="http://www.tuisongbao.com/">推送宝</a>，a2dm</li>
         <li class="slide"><a href="https://github.com/joyent/node/wiki/Projects,-Applications,-and-Companies-Using-Node">
             More Projects, Applications, and Companies Using Node
         </a></li>

@@ -1,6 +1,6 @@
 .deck-container { color: white; }
 .deck-container strong { color: #8BC84B; }
-.slide li { font-size: 32px;; }
+.slide li { font-size: 32px; }
 .deck-container li pre { margin-bottom: 0; }
 .figure { float: left; padding-right: 12px; }
 .cl { clear: left; }
