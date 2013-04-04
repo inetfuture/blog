@@ -87,7 +87,7 @@
 
 <section class="slide" id="agenda">
     <h2>Agenda</h2>
-    <ul>
+    <ul style="width: 45%; float: left;">
         <li>What Is Node.js</li>
         <li>What's It For</li>
         <li>Why Node.js</li>
@@ -95,9 +95,14 @@
         <li>Quick Start</li>
         <li>Core Modules</li>
         <li>CommonJS and NPM</li>
+    </ul>
+    <ul>
         <li>RealTime App Demos</li>
         <li>Real Use Cases in Production</li>
-        <li>Node.js Is Not Silver Bullet</li>
+        <li>Concurrent Long Connection</li>
+        <li>Useful Resources</li>
+        <li>Node.js Isn't A Silver Bullet</li>
+        <li>Opinions I Would Like to Share</li>
     </ul>
 </section>
 
@@ -107,6 +112,12 @@
         <li>A <strong>server-side JavaScript</strong> platform based on Chrome V8</li>
         <li><strong>Event-driven, single-threaded, </strong> programming environment</li>
         <li>Performing <strong>Non-blocking(Asynchronous) I/O</strong></li>
+        <li><span style="color: indianred; font-weight: bold;">Not a library, framework or new language</span></li>
+        <li>
+            <div class="figure">
+                <img src="images/chrome_node.jpg" alt="chrome node"/>
+            </div>
+        </li>
     </ul>
 </section>
 
@@ -136,12 +147,12 @@
         <li>Asynchronous I/O is <strong>better</strong> for <strong>high I/O application</strong></li>
         <li>Event-driven and single-threaded is <strong>faster</strong> than multi-threaded <strong>under high concurrency</strong></li>
         <li>Based on Chrom V8, Fast!</li>
-        <li>Lightweight, easy to learn, <a href="http://nodejs.org/api/">api doc</a></li>
+        <li>Lightweight, easy to learn, <a href="http://nodejs.org/api/">concise api</a></li>
+        <li>A good <strong>balance</strong> between <strong>performance</strong> and <strong>productivity</strong></li>
         <li>Cross platform, Linux, Mac, SunOS, Windows</li>
         <li><a href="https://github.com/joyent/node">Open Source</a>, MIT license</li>
-        <li>Active community, over 25, 000 modules</li>
+        <li>Active community, over 25, 000 modules in less than 5 years</li>
         <li><strong>JavaScript!!!</strong> One language for front-end and back-end</li>
-        <li>...</li>
     </ul>
 </section>
 
@@ -278,7 +289,7 @@
     <h2>Real Use Cases in Production</h2>
     <ul>
         <li><a href="http://developer.yahoo.com/blogs/ydn/posts/2011/11/yahoo-announces-cocktails-%E2%80%93-shaken-not-stirred/">Yahoo!</a>
-            Mojito, a JavaScript web application framework, and hosted platform for its app</li>
+            Mojito, a JavaScript web application framework</li>
         <li><a href="http://joyent.com/blog/ebay-chooses-node-js-as-the-runtime-stack-in-ql-io-a-data-retrieval-and-aggregation-gateway-for-http-apis">eBay</a>,
             gateway for HTTP APIs</li>
         <li><a href="http://www.infoq.com/news/2012/10/Ruby-on-Rails-Node-js-LinkedIn">LinkedIn</a>,
@@ -296,6 +307,34 @@
         <li class="slide"><a href="https://github.com/joyent/node/wiki/Projects,-Applications,-and-Companies-Using-Node">
             More Projects, Applications, and Companies Using Node
         </a></li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2>Node.js Isn't A Silver Bullet</h2>
+    <ul>
+        <li>Don't see every problem as a nail when you have a hammer!</li>
+        <li class="slide">
+            <h3>Use the right tool in the right place!</h3>
+            <div>
+                <div style="width: 45%; float: left; color: green; font-weight: bold;">
+                    Suitable Scenarios:
+                    <ul>
+                        <li>Push</li>
+                        <li>RealTime web app</li>
+                        <li>Game server</li>
+                        <li>Small and medium website</li>
+                    </ul>
+                </div>
+                <div style="color: indianred; font-weight: bold;">
+                    Unsuitable Scenarios(for now):
+                    <ul>
+                        <li>Big website</li>
+                        <li>Computation sensitive task</li>
+                    </ul>
+                </div>
+            </div>
+        </li>
     </ul>
 </section>
 
