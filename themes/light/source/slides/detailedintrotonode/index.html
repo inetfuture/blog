@@ -239,6 +239,7 @@ socket.listen(function (client) {   // Non-blocking
 
     <section class="slide" id="highConcurrency7">
         <h3>Speak with test data: 推送宝A2DM</h3>
+        <img src="images/concurrent_long_connections.png" alt="concurrent long connections"/>
     </section>
 
     <section class="slide" id="performance">
@@ -361,12 +362,17 @@ sleep</code></pre>
         <h3>Benefits</h3>
         <ul>
             <li>Monoglot programming</li>
-            <li class="slide">That's all</li>
+            <li class="slide">It's enough!!!</li>
         </ul>
-        <h3 class="slide">Frameworks</h3>
-        <ul>
-
-        </ul>
+        <div class="slide">
+            <h3>Frameworks</h3>
+            <ul>
+                <li><a href="http://developer.yahoo.com/cocktails/mojito/">Mojito</a></li>
+                <li><a href="http://geddyjs.org/">geddy</a></li>
+                <li><a href="http://flatironjs.org/#data">flatiron</a></li>
+                <li><a href="http://compoundjs.com/">compound.js</a></li>
+            </ul>
+        </div>
     </section>
 
     <section class="slide" id="revolution1">
@@ -471,7 +477,8 @@ sleep</code></pre>
     <section class="slide" id="parallelism">
         <h2>Multi-cores, Parallelism?</h2>
         <ul>
-            <li>Official <strong>cluster</strong> module</li>
+            <li>Share socket: official <strong>Cluster</strong> module</li>
+            <li>Multiple processes listen on different ports</li>
         </ul>
     </section>
 
@@ -479,6 +486,10 @@ sleep</code></pre>
         <h2>Computation Intensive Task?</h2>
         <ul>
             <li>One long computation will block all other requests</li>
+            <li><span style="color: indianred; font-weight: bold;">
+                Don't do computation intensive task in your web server</span></li>
+
+            <li>Write c++ extension, or <a href="https://github.com/tjanczuk/edge">edge.js</a></li>
         </ul>
     </section>
 
@@ -507,9 +518,10 @@ sleep</code></pre>
     <section class="slide" id="async">
         <h2>Callback Hell and Asynchronous Programming Patterns</h2>
         <ul>
-            <li>Wind.js</li>
-            <li>async</li>
-            <li>Deferreds, Promises and Futures</li>
+            <li>Wind.js(like c#5.0 async/await keywords)</li>
+            <li>async.js</li>
+            <li>Promises and Deferreds</li>
+            <li>Coroutines</li>
         </ul>
     </section>
 
@@ -517,7 +529,7 @@ sleep</code></pre>
         <h2>How to Debug and Handle Exception</h2>
         <ul>
             <li>webkit dev tools</li>
-            <li>Domain</li>
+            <li>Official <strong>Domain</strong> module</li>
         </ul>
     </section>
 
@@ -525,6 +537,7 @@ sleep</code></pre>
         <h2>Pitfalls</h2>
         <ul>
             <li>setInterval</li>
+            <li>Implementation by hands is better than third-party modules, in particular scenario</li>
         </ul>
     </section>
 
@@ -536,11 +549,6 @@ sleep</code></pre>
         <li>Desktop</li>
         <li>Embeded</li>
     </ul>
-</section>
-
-<section class="slide" id="summary">
-    <h2>Summary</h2>
-    ...
 </section>
 
 <section class="slide" id="reference">

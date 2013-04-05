@@ -66,7 +66,7 @@
     </ul>
 </section>
 
-<section class="slide">
+<section class="slide" id="before2">
     <h2></h2>
     <ul>
         <li>And, what JavaScript looks like in your mind?</li>
@@ -99,9 +99,9 @@
     <ul>
         <li>RealTime App Demos</li>
         <li>Real Use Cases in Production</li>
-        <li>Concurrent Long Connection</li>
-        <li>Useful Resources</li>
+        <li>Concurrent Long Connections</li>
         <li>Node.js Isn't A Silver Bullet</li>
+        <li>Useful Resources</li>
         <li>Opinions I Would Like to Share</li>
     </ul>
 </section>
@@ -172,7 +172,7 @@
         <li>2009, Ryan Dahl, web.js</li>
         <li>2010, Joyent</li>
         <li>2011, Microsoft</li>
-        <li>Now, v0.10.1</li>
+        <li>Now, v0.10.3</li>
     </ul>
 </section>
 
@@ -186,9 +186,9 @@
     <ul>
         <li>webServer.js:
 <pre><code>var http = require('http');
-    http.createServer(function (req, res) {
+http.createServer(function (req, res) {
     res.end('Hello world!');
-    }).listen(3000);</code></pre>
+}).listen(3000);</code></pre>
         </li>
         <li><strong>node</strong> webServer.js</li>
     </ul>
@@ -200,14 +200,14 @@
         <li><strong>npm</strong> install express</li>
         <li>webServer2.js:
     <pre><code>var express = require('express');
-        var app = express();
-        app.get('/hello', function (req, res) {
-        res.send('world');
-        });
-        app.get('/hi', function (req, res) {
-        res.send('Node.js');
-        });
-        app.listen(3000);</code></pre>
+var app = express();
+app.get('/hello', function (req, res) {
+    res.send('world');
+});
+app.get('/hi', function (req, res) {
+    res.send('Node.js');
+});
+app.listen(3000);</code></pre>
         </li>
         <li><strong>node</strong> webServer2.js</li>
     </ul>
@@ -288,8 +288,6 @@
 <section class="slide" id="useCases">
     <h2>Real Use Cases in Production</h2>
     <ul>
-        <li><a href="http://developer.yahoo.com/blogs/ydn/posts/2011/11/yahoo-announces-cocktails-%E2%80%93-shaken-not-stirred/">Yahoo!</a>
-            Mojito, a JavaScript web application framework</li>
         <li><a href="http://joyent.com/blog/ebay-chooses-node-js-as-the-runtime-stack-in-ql-io-a-data-retrieval-and-aggregation-gateway-for-http-apis">eBay</a>,
             gateway for HTTP APIs</li>
         <li><a href="http://www.infoq.com/news/2012/10/Ruby-on-Rails-Node-js-LinkedIn">LinkedIn</a>,
@@ -310,27 +308,43 @@
     </ul>
 </section>
 
-<section class="slide">
+<section class="slide" id="concurrent">
+    <h2>Concurrent Long Connections</h2>
+    <ul>
+        <li>How many concurrent tcp connections do you think a single machine can hold at most?</li>
+        <li class="slide">A common misunderstanding: 65535</li>
+        <li class="slide"><a href="http://www.kegel.com/c10k.html">C10K problem</a>, that's ten years ago</li>
+        <li class="slide">
+            <div class="figure">
+                <img src="images/concurrent_long_connections.png" alt="concurrent long connections"/>
+            </div>
+        </li>
+    </ul>
+</section>
+
+<section class="slide" id="bullet">
     <h2>Node.js Isn't A Silver Bullet</h2>
     <ul>
         <li>Don't see every problem as a nail when you have a hammer!</li>
-        <li class="slide">
+        <li>
             <h3>Use the right tool in the right place!</h3>
             <div>
                 <div style="width: 45%; float: left; color: green; font-weight: bold;">
                     Suitable Scenarios:
                     <ul>
+                        <li>Gateway/Proxy</li>
                         <li>Push</li>
                         <li>RealTime web app</li>
                         <li>Game server</li>
                         <li>Small and medium website</li>
+                        <li>Single task command line tool</li>
                     </ul>
                 </div>
                 <div style="color: indianred; font-weight: bold;">
                     Unsuitable Scenarios(for now):
                     <ul>
-                        <li>Big website</li>
-                        <li>Computation sensitive task</li>
+                        <li>Computation intensive task</li>
+                        <li>Complicated transaction</li>
                     </ul>
                 </div>
             </div>
@@ -339,6 +353,26 @@
 </section>
 
 <section class="slide">
+    <h2>Useful Resources</h2>
+    <ul>
+        <li><a href="http://howtonode.org/">howtonode.org</a></li>
+        <li><a href="http://cnodejs.org/">cnodejs.org</a></li>
+        <li><a href="http://book.mixu.net/">Mixu's Node book</a></li>
+        <li><a href="http://nodetoolbox.com/">nodetoolbox.com</a></li>
+        <li><a href="http://www.slideshare.net/search/slideshow?searchfrom=header&q=node.js">slideshare.net</a></li>
+        <li><a href="https://speakerdeck.com/search?q=node.js">speakdeck.com</a></li>
+        <li><a href="http://www.heroku.com">heroku.com</a></li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2>Opinions I Would Like to Share</h2>
+    <ul>
+
+    </ul>
+</section>
+
+<section class="slide" id="end">
     <h2>Tanks!</h2>
 </section>
 
@@ -368,7 +402,6 @@
 <a href="../" title="Permalink to this slide" class="deck-permalink">#</a>
 
 <script src="../../deck.js/jquery-1.7.2.min.js"></script>
-
 <!-- Deck Core and extensions -->
 <script src="../../deck.js/core/deck.core.js"></script>
 <script src="../../deck.js/extensions/hash/deck.hash.js"></script>

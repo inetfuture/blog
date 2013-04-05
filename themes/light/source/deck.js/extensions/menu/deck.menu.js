@@ -61,8 +61,8 @@ on the deck container.
 		/* Forced to do this in JS until CSS learns second-grade math. Save old
 		style value for restoration when menu is hidden. */
 		if (Modernizr.csstransforms) {
+            $c.height(10000);
 			$.each(rootSlides, function(i, $slide) {
-				$slide.data('oldStyle', $slide.attr('style'));
 				$slide.css({
 					'position': 'absolute',
 					'left': ((i % 4) * 25) + '%',
@@ -76,6 +76,17 @@ on the deck container.
 			$c.removeClass(opts.classes.loading)
 				.scrollTop($[deck]('getSlide').offset().top);
 		}, 0);
+
+        $c.mousewheel(function (event, delta, deltaX, deltaY) {
+            var pos = $c.scrollTop();
+            if (delta < 0) {
+                pos += 40;
+            } else {
+                pos -= 40;
+            }
+
+            $c.scrollTop(pos);
+        });
 	});
 
 	/*
@@ -105,6 +116,8 @@ on the deck container.
 		window.setTimeout(function() {
 			$c.removeClass(opts.classes.loading).scrollTop(0);
 		}, 0);
+
+        $c.unmousewheel();
 	});
 
 	/*
