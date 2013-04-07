@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--[if lt IE 7]> <html class="no-js ie6" lang="en"> <![endif]-->
 <!--[if IE 7]>    <html class="no-js ie7" lang="en"> <![endif]-->
-<!--[if IE 8]>    <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class=href="../../den"> <![endif]-->
 <!--[if gt IE 8]><!-->  <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
 	<meta charset="utf-8">
@@ -69,8 +69,9 @@
         <h2>Concurrency Model of Net Servers</h2>
         <h3>Two facts</h3>
         <ul>
-            <li><red>I/O is slow!</red> <a href="http://www.eecs.berkeley.edu/~rcs/research/interactive_latency.html">Numbers Every
-            Programmer Should Know By Year</a>
+            <li><red>I/O is slow!</red> 
+                <a href="http://www.eecs.berkeley.edu/~rcs/research/interactive_latency.html">
+                    Numbers Every Programmer Should Know By Year</a>
                 <div class="figure">
                     <img src="./images/io_latency.png" alt="io latency"/>
                 </div>
@@ -116,7 +117,8 @@ while (true) {
 }</cod></pre>
             </li>
             <li class="slide">One process/thread per client</li>
-            <li class="slide">Improved version: pre-fork, processes/threads pool, like Apache + PHP, IIS + APS.NET</li>
+            <li class="slide">Improved version: pre-fork, processes/threads pool, like Apache + PHP, IIS + 
+                APS.NET</li>
             <li class="slide">This model has some down-slides</li>
         </ul>
     </section>
@@ -128,8 +130,8 @@ while (true) {
                     <img src="./images/io_waiting.png" alt="io waiting"/>
                 </div>
             </li>
-            <li class="slide cl">One process/thread <strong>consumes a lot memory</strong>, but most of the time, they are
-                just waiting!</li>
+            <li class="slide cl">One process/thread <strong>consumes a lot memory</strong>, but most of the time, they
+                are just waiting!</li>
             <li class="slide">Context Switch, lock <strong>wasts a lot CPU!</strong></li>
             <li class="slide">In addition for multi-threaded, dead lock, race condition... <strong>complicated!</strong></li>
             <li class="slide">There are several less popular but more efficient models out there...</li>
@@ -488,8 +490,8 @@ sleep</code></pre>
             <li>One long computation will block all other requests</li>
             <li><span style="color: indianred; font-weight: bold;">
                 Don't do computation intensive task in your web server</span></li>
-
-            <li>Write c++ extension, or <a href="https://github.com/tjanczuk/edge">edge.js</a></li>
+            <li>process.nextTick(), or <a href="https://github.com/tjanczuk/edge">edge.js</a></li>
+            <li>Write c++ extension</li>
         </ul>
     </section>
 
@@ -544,9 +546,9 @@ sleep</code></pre>
 <section class="slide" id="everywhere">
     <h2>JavaScript Everywhere</h2>
     <ul>
-        <li>PC Browser</li>
-        <li>Mobile Platform</li>
-        <li>Desktop</li>
+        <li>Browsers</li>
+        <li>Mobile Platforms</li>
+        <li>Desktops</li>
         <li>Embeded</li>
     </ul>
 </section>
@@ -556,9 +558,11 @@ sleep</code></pre>
     <div style="width: 45%; float: left;">
         <ul>
             <li><a href="http://www.infoq.com/cn/articles/nodejs-asynchronous-io">深入浅出Node.js - 田永强</a></li>
-            <li><a href="http://wenku.baidu.com/view/4a4ded7f1711cc7931b71667.html">Node.js异步原理和缺陷 - 赵成</a></li>
+            <li><a href="http://wenku.baidu.com/view/4a4ded7f1711cc7931b71667.html">Node.js异步原理和缺陷 - 
+                赵成</a></li>
             <li><a href="https://speakerdeck.com/kunklejr/node-dot-js-explained">Node.js Explained by Jeff Kunkle</a></li>
-            <li><a href="http://wenku.baidu.com/view/b5ae3cc3bb4cf7ec4afed0a0.html">Node.js在朋友网的实践 - 黄友昆</a></li>
+            <li><a href="http://wenku.baidu.com/view/b5ae3cc3bb4cf7ec4afed0a0.html">Node.js在朋友网的实践 - 
+                黄友昆</a></li>
             <li><a href="http://jimbojw.com/fullstack/">Full-stack JavaScript by Jim R. Wilson</a></li>
         </ul>
     </div>
