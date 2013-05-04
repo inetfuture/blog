@@ -12,7 +12,7 @@ language: zh-CN
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://inetfuture.github.com
+url: http://inetfuture.com
 root: /
 permalink: :year/:month/:day/:title/
 tag_dir: tags
@@ -66,11 +66,15 @@ per_page: 10
 pagination_dir: page
 
 # Disqus
-disqus_shortname:
+disqus_shortname: inetfutureblog
 
 # Extensions
 ## Plugins: https://github.com/tommy351/hexo/wiki/Plugins
 ## Themes: https://github.com/tommy351/hexo/wiki/Themes
+plugins:
+  - hexo-generator-feed
+  - hexo-generator-sitemap
+
 theme: light
 exclude_generator:
 
