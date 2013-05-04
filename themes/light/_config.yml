@@ -1,12 +1,13 @@
 menu:
   Home: /
   Archives: /archives
+  GitHub: https://github.com/inetfuture
 
-widgets: 
+widgets:
 - search
 - category
 - tag
-- twitter
+- recent_posts
 
 excerpt_link: Read More
 
@@ -25,5 +26,5 @@ addthis:
 
 fancybox: true
 
-google_analytics:
+google_analytics: UA-39930568-1
 rss:

@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class=href="../../den"> <![endif]-->
+<!--[if gt IE 8]><!-->  <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<title>A Detailed Introduction to Node.js</title>
+
+	<meta name="description" content="A Brief Introduction to Node.js">
+	<meta name="author" content="inetfuture">
+	<meta name="viewport" content="width=1024, user-scalable=no">
+
+	<!-- Core and extension CSS files -->
+	<link rel="stylesheet" href="../../deck.js/core/deck.core.css">
+	<link rel="stylesheet" href="../../deck.js/extensions/goto/deck.goto.css">
+	<link rel="stylesheet" href="../../deck.js/extensions/menu/deck.menu.css">
+	<link rel="stylesheet" href="../../deck.js/extensions/navigation/deck.navigation.css">
+	<link rel="stylesheet" href="../../deck.js/extensions/status/deck.status.css">
+	<link rel="stylesheet" href="../../deck.js/extensions/hash/deck.hash.css">
+	<link rel="stylesheet" href="../../deck.js/extensions/scale/deck.scale.css">
+
+	<!-- Style theme. More available in /themes/style/ or create your own. -->
+	<link rel="stylesheet" href="../../deck.js/themes/style/neon.css">
+
+	<!-- Transition theme. More available in /themes/transition/ or create your own. -->
+	<link rel="stylesheet" href="../../deck.js/themes/transition/horizontal-slide.css">
+
+	<script src="../../deck.js/modernizr.custom.js"></script>
+</head>
+
+<body class="deck-container">
+<link rel="stylesheet" href="./style.css">
+
+
+
+
+<!-- Begin slides -->
+<section class="slide" id="title">
+	<h1>A Detailed Introduction to Node.js</h1>
+    <h3 style="position: absolute; right: 20%; bottom: 15%;">Aaron Wang 2013/3/30</h3>
+</section>
+
+<section class="slide" id="purpose">
+    <h2>My purpose is bring things up so you can dig into if you are intrested</h2>
+</section>
+
+<section class="slide" id="agenda">
+	<h2>Agenda</h2>
+    <ul>
+        <li>Think Node.js in the Perspective of <strong>Back-end</strong> Engineers</li>
+        <li>Think Node.js in the Perspective of <strong>Front-end</strong> Engineers</li>
+        <li>The Disadvantages and Solutions</li>
+        <li>JavaScript Everywhere!</li>
+        <li>Summary</li>
+    </ul>
+</section>
+
+<section class="slide" id="backend-agenda">
+    <h2>Think Node.js in the Perspective of Back-end Engineers</h2>
+    <ul>
+        <li>Concurrency Model of Net Servers</li>
+        <li>High Concurrency of Net Servers</li>
+        <li>High Performance</li>
+        <li>Inner Structure and Running Process of Node.js</li>
+    </ul>
+</section>
+
+    <section class="slide" id="concurrency1">
+        <h2>Concurrency Model of Net Servers</h2>
+        <h3>Two facts</h3>
+        <ul>
+            <li><red>I/O is slow!</red>
+                <a href="http://www.eecs.berkeley.edu/~rcs/research/interactive_latency.html">
+                    Numbers Every Programmer Should Know By Year</a>
+                <div class="figure">
+                    <img src="./images/io_latency.png" alt="io latency"/>
+                </div>
+                <h3 class="cl">And one of a net server's main job is: dealing with I/O</h3>
+            </li>
+            <li><red>Context Switch is expensive!</red></li>
+        </ul>
+
+        <h4>
+    </section>
+
+    <section class="slide" id="concurrency2">
+        <h3>The most primitive net server, <strong>iterative</strong> server with <strong>blocking I/O</strong></h3>
+        <ul>
+            <li class="slide">
+<pre><cod>var socket = new Socket();
+socket.bind(80);
+socket.listen();
+while (true) {
+    var client = socket.accept();   // blocking
+    ...
+    queryDB();                      // blocking
+    ...
+}</cod></pre>
+            </li>
+            <li class="slide">One client a time, no concurrency, barely used!</li>
+        </ul>
+    </section>
+
+    <section class="slide" id="concurrency3">
+        <h3>The most popular model, <strong>multiple processes/threads</strong> with <strong>blocking I/O</strong></h3>
+        <ul>
+            <li class="slide">
+<pre><cod>var socket = new Socket();
+socket.bind(80);
+socket.listen();
+while (true) {
+    var client = socket.accept();   // blocking
+    fork();
+    ...
+    queryDB();                      // blocking
+    ...
+}</cod></pre>
+            </li>
+            <li class="slide">One process/thread per client</li>
+            <li class="slide">Improved version: pre-fork, processes/threads pool, like Apache + PHP, IIS +
+                APS.NET</li>
+            <li class="slide">This model has some down-slides</li>
+        </ul>
+    </section>
+
+    <section class="slide" id="concurrency4">
+        <ul>
+            <li>
+                <div class="figure">
+                    <img src="./images/io_waiting.png" alt="io waiting"/>
+                </div>
+            </li>
+            <li class="slide cl">One process/thread <strong>consumes a lot memory</strong>, but most of the time, they
+                are just waiting!</li>
+            <li class="slide">Context Switch and lock <strong>wast a lot CPU!</strong></li>
+            <li class="slide">In addition for multi-threaded: dead lock, race condition... <strong>complicated!</strong></li>
+            <li class="slide">There are several less popular but more efficient models out there...</li>
+        </ul>
+    </section>
+
+    <section class="slide" id="concurrency5">
+        <h3><strong>Event-driven, single-threaded, and non-blocking I/O</strong></h3>
+        <ul>
+            <li class="slide">
+<pre><cod>var socket = new Socket();
+socket.bind(80);
+socket.listen(function (client) {   // Non-blocking
+    ...
+    queryDB(function () {           // Non-blocking
+        ...
+    }):
+});</cod></pre>
+            </li>
+            <li class="slide">This is good!</li>
+        </ul>
+    </section>
+
+    <section class="slide" id="concurrency6">
+        <h2></h2>
+        <ul>
+            <li>Consume <strong>much lesser memory!</strong></li>
+            <li>No massive Context Switch, lock, <strong>100% CPU utilization!</strong></li>
+            <li>Asynchronization makes CPU and I/O go in parallel,
+                <strong>makes better use of hardware, increase throughput</strong></li>
+            <li>Single thread, sequential, <strong>simple!</strong></li>
+            <li class="slide">This is based on an event loop, and all clients are handled in one single thread with
+                non-blocking I/O, very <strong>suitable for I/O intensive application</strong></li>
+            <li class="slide">Event loop? GUI application UI thread: WinForm/WPF/Android...</li>
+            <li class="slide">Nginx, HAProxy, Netty... and <strong>Node.js</strong></li></li>
+        </ul>
+    </section>
+
+    <section class="slide" id="concurrency7">
+        <h3><strong>Multiple threaded</strong> with <strong>non-blocking I/O</strong></h3>
+        <a href="http://channel9.msdn.com/Events/TechDays/Techdays-2012-the-Netherlands/2287">
+            C#5, ASP.NET MVC 4, and asynchronous Web applications</a>
+    </section>
+
+    <section class="slide" id="concurrency8">
+        <h3>one more model: lightweight/micro process/thread, coroutine(协程), fiber(纤程)...</h3>
+        <ul>
+            <li>A means of creating code blocks that can be <strong>paused</strong> and
+                <strong>resumed</strong>, much like threads.</li>
+            <li>Computer multitasking: <strong>preemptive</strong> VS <strong>cooperative</strong></li>
+            <li class="slide">Native supported by Lua, ruby</li>
+            <li class="slide">Supported by 3-party libraries in python(greenlet, stackless), Node.js(Fiber)</li>
+            <li class="slide">Erlang, go, more advanced</li>
+            <li class="slide">There still is <strong>Context Switch</strong>, but it's in user-level,
+                <strong>much cheaper</strong> than system-level</li>
+            <li class="slide">Evolution direction: multiple processes/threads => event-driven => coroutine?</li>
+        </ul>
+    </section>
+
+    <section class="slide" id="highConcurrency1">
+        <h2>High Concurrency of Net Servers</h2>
+        <ul>
+            <li>10K => <strong>1000K</strong></li>
+            <li>HTML5 WebSocket, HTTP2.0</li>
+            <li><strong>Real Time</strong> Applications?</li>
+            <li class="slide"><strong>long connections</strong></li>
+            <li class="slide">One process/thread per client <strong>doesn't</strong> fit in</li>
+            <li class="slide">ASP.NET can handle this situation with IAsyncHttpHandler + Asynchronous I/O(still based
+                on thread poll), also c/c++, Erlang with their own ways</li>
+            <li class="slide">But we choose Node.js, why?</li>
+        </ul>
+    </section>
+
+    <section class="slide" id="highConcurrency3">
+        <h3>A compare from 朋友网</h3>
+        <img src="./images/pengyou1.png" alt="A compare from 朋友网"/>
+    </section>
+
+    <section class="slide" id="highConcurrency4">
+        <h3>A compare from 朋友网</h3>
+        <img src="./images/pengyou2.png" alt="A compare from 朋友网"/>
+    </section>
+
+    <section class="slide" id="highConcurrency5">
+        <h3>A compare from 朋友网</h3>
+        <img src="./images/pengyou3.png" alt="A compare from 朋友网"/>
+    </section>
+
+    <section class="slide" id="highConcurrency6">
+        <h3>A compare from 朋友网</h3>
+        <img src="./images/pengyou4.png" alt="A compare from 朋友网"/>
+    </section>
+
+    <section class="slide" id="highConcurrency7">
+        <h3>Speak with test data: 推送宝A2DM</h3>
+        <img src="images/concurrent_long_connections.png" alt="concurrent long connections"/>
+    </section>
+
+    <section class="slide" id="performance">
+        <h2>High Performance</h2>
+        <ul>
+            <li>V8 is fast, faster than python/ruby/php</li>
+            <li>c++ extension</li>
+        </ul>
+    </section>
+
+    <section class="slide" id="inner1">
+        <h2>Inner Structure and Running Process </h2>
+        <h3>Inner Structure</h3>
+        <img src="./images/node_structure.jpg" alt="node structure" style="width: 700px; float: left;" />
+        <img src="./images/node_src_structure.png" alt="node src structure"/>
+    </section>
+
+    <section class="slide" id="inner2">
+        <h3>Event loop?</h3>
+        <ul>
+            <li class="slide">
+<pre><code>while there are still events to process:
+    e = get the next event
+    if there is a callback associated with e:
+    call the callback
+</code></pre>
+            </li>
+        </ul>
+        <h3 class="slide">Asynchronous I/O?</h3>
+        <ul>
+            <li class="slide">
+                *unix
+                <ul>
+                    <li>sockets: <strong>I/O multiplexing</strong>, epoll, kqueue</li>
+                    <li>regular files: <strong>threads</strong></li>
+                </ul>
+            </li>
+            <li class="slide">
+                windows
+                <ul>
+                    <li class="slide">IOCP, <strong>kernel thread pool</strong></li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+    <section class="slide" id="inner3">
+        <h3>Running process</h3>
+        <ul>
+            <li>Node.js is <strong>single-threaded in JavaScript level</strong>, but under the hood is a different world</li>
+            <li class="slide">
+                <div class="figure">
+                    <img src="./images/node_processing_model.png" alt="node processing model" width="800px"/>
+                </div>
+            </li>
+            <li class="slide cl">Node.js keeps a single thread for your code</li>
+            <li class="slide">Everything runs in parallel except your code</li>
+        </ul>
+    </section>
+
+<section class="slide" id="frontend-agenda">
+    <h2>Think Node.js in the Perspective of Front-end Engineers</h2>
+    <ul>
+        <li>Full Stack JavaScript</li>
+        <li>Web Developing Revolution</li>
+    </ul>
+</section>
+
+    <section class="slide" id="stack1">
+        <h2>Full Stack JavaScript</h2>
+        <h3>One language to rule them all</h3>
+        <img src="./images/ring.jpg" alt="ring"/>
+    </section>
+
+    <section class="slide" id="stack2">
+        <h3>What's a stack?</h3>
+        <ul>
+            <li>User interface</li>
+            <li>Business logic</li>
+            <li>Data store</li>
+        </ul>
+        <h3>Impedance mismatch</h3>
+        <ul>
+            <li>User interface <-> Business logic</li>
+            <li>Business logic <-> Data store</li>
+        </ul>
+    </section>
+
+    <section class="slide" id="stack3">
+        <h3>ASP.NET</h3>
+        <ul>
+            <li>Javascript <-> c#</li>
+            <li>c# <-> sql</li>
+        </ul>
+        <h3>J2EE</h3>
+        <ul>
+            <li>Javascript <-> java</li>
+            <li>java <-> sql</li>
+        </ul>
+        <h3>PHP</h3>
+        <ul>
+            <li>Javascript <-> php</li>
+            <li>php <-> sql</li>
+        </ul>
+        <h3 class="slide">You may have get used to it, but does it have to be this way?</h3>
+    </section>
+
+    <section class="slide"id="stack4">
+        <h3>Now you have a better choice:</h3>
+        <ul>
+            <li>JavaScript <-> JSON <-> JavaScript</li>
+            <li>User interface: JavaScript</li>
+            <li>Business logic: Node.js</li>
+            <li>Data store: MongoDB, CouchDB, RavenDB...</li>
+            <li>Even search engine: Apache Solr, ElasticSearch...</li>
+        </ul>
+    </section>
+
+    <section class="slide" id="stack5">
+        <h3>Benefits</h3>
+        <ul>
+            <li>Monoglot programming</li>
+            <li class="slide">It's enough!!!</li>
+        </ul>
+        <div class="slide">
+            <h3>Frameworks</h3>
+            <ul>
+                <li><a href="http://developer.yahoo.com/cocktails/mojito/">Mojito</a></li>
+                <li><a href="http://geddyjs.org/">geddy</a></li>
+                <li><a href="http://flatironjs.org/#data">flatiron</a></li>
+                <li><a href="http://compoundjs.com/">compound.js</a></li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="slide" id="revolution1">
+        <h2>Web Developing Revolution</h2>
+        <ul>
+            <li><strong>SPA</strong> is getting popular</li>
+            <li>New way to write css: less, stylus...</li>
+            <li>New way to write javascript: backbone.js, knockout.js, angular.js, Ember.js...</li>
+        </ul>
+        <div class="slide">
+        <h3>Old way of web developing</h3>
+        <ul>
+            <li>Develop a HTTP API on server side</li>
+            <li>Call/Polling this API with ajax on client slide</li>
+            <li>Update DOM</li>
+            <li>With MVC frameworks, you can invoke HTTP API and update DOM much easier
+            <li class="slide"><strong>But this revolution can get further</strong></li>
+        </ul>
+        </div>
+    </section>
+
+    <section class="slide" id="revolution2">
+        <h3><a href="http://meteor.com/main">Meteor</a> - <strong>A better way to build apps</strong></h3>
+        <ul>
+            <li><strong>Clean, powerful data synchronization</strong><br />
+                Write your client code as if it were running on the server and had direct access to the database.
+                No more loading your data from REST endpoints.</li>
+            <li><strong>Live page updates</strong><br />
+                Just write your templates. They automatically update when data in the database changes.
+                No more boilerplate redraw code to write. </li>
+            <li><strong>Sensitive code runs in a privileged environment</strong></li>
+            <li class="slide">Based on <strong>Node.js</strong> and MongoDB.</li>
+        </ul>
+        <div class="slide">
+            <h3>More analogous frameworks</h3>
+            <h3><a href="http://derbyjs.com/">Derby</a>, <a href="http://www.socketstream.org/">SocketStream</a>...
+                all based on <strong>Node.js</strong></h3>
+        </div>
+    </section>
+
+<section class="slide" id="why-agenda">
+    <h2>Why So Popular On Earth?</h2>
+    <ul>
+        <li>Back to the beginning</li>
+        <li>Reinvent the Wheel?</li>
+        <li>It Put Cool Things Together!</li>
+    </ul>
+</section>
+
+    <section class="slide" id="beginning">
+        <h2>Back to the Beginning</h2>
+        <ul>
+            <li>Ryan Dahl, wants a <strong>completely asynchronous</strong> net server</li>
+            <li>Ruby VM was slow...</li>
+            <li>C/C++ is too complicated</li>
+            <li>Lua is perfect except it has existed synchronous I/O libraries</li>
+            <li class="slide">Here JavaScript comes:
+                <ul>
+                    <li>natural single-threaded/event-driven model, asynchronization</li>
+                    <li>almost blank area on the server side, so no issues of breaking old habits</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+    <section class="slide" id="reinvent">
+        <h2>Reinvent the Wheel?</h2>
+        <ul>
+            <li>Is server side JavaScript new?
+                <ul class="slide">
+                    <li>Rhino - Java</li>
+                    <li>IronJS - .Net</li>
+                    <li>Javascript.NET - V8 - .Net</li>
+                </ul>
+            </li>
+            <li class="slide">Is event-driven programming new?
+                <ul class="slide">
+                    <li>EventMachine - ruby</li>
+                    <li><strong>Twisted</strong> - python</li>
+                    <li>libevent - c</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+    <section class="slide" id="cool">
+        <h2>It Put Cool Things Together!</h2>
+    </section>
+
+<section class="slide" id="disadvantage">
+    <h2>The Disadvantages and Solutions</h2>
+    <ul>
+        <li>Multi-cores, Parallelism?</li>
+        <li>Computation Intensive Task?</li>
+        <li>JavaScript Is Not Perfect!</li>
+        <li>Callback Hell and Asynchronous Programming Patterns</li>
+        <li>How to Debug and Handle Exception</li>
+        <li>Pitfalls</li>
+    </ul>
+</section>
+
+    <section class="slide" id="parallelism">
+        <h2>Multi-cores, Parallelism?</h2>
+        <ul>
+            <li>Share socket: official <strong>Cluster</strong> module</li>
+            <li>Multiple processes listen on different ports</li>
+        </ul>
+    </section>
+
+    <section class="slide" id="computation">
+        <h2>Computation Intensive Task?</h2>
+        <ul>
+            <li>One long computation will block all other requests</li>
+            <li><span style="color: indianred; font-weight: bold;">
+                Don't do computation intensive task in your web server</span></li>
+            <li>setTimeout(function () {}, <strong>0</strong>) ===> process.nextTick(function () {})</li>
+            <li><a href="https://github.com/tjanczuk/edge">edge.js</a></li>
+            <li>Write c++ extension</li>
+        </ul>
+    </section>
+
+    <section class="slide" id="notPerfect1">
+        <h2>JavaScript Is Not Perfect!</h2>
+        <div class="figure">
+            <img src="images/javascript_good_parts.jpg" alt="javascript good parts" style="width: 600px;">
+        </div>
+    </section>
+
+    <section class="slide" id="notPerfect2">
+        <ul>
+            <li>
+                <h3>Compile-to-JavaScript languages:</h3>
+                <ul>
+                    <li>GWT</li>
+                    <li>CoffeeScript</li>
+                    <li>TypeScript</li>
+                    <li>ClojureScript</li>
+                    <li>More: <a href="http://altjs.org/#altjs">http://altjs.org/#altjs</a></li>
+                </ul>
+            </li>
+            <li>
+                <h3>Alternatives:</h3>
+                <ul>
+                    <li>Google Dart</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+    <section class="slide" id="async1">
+        <h2>Callback Hell and Asynchronous Programming Patterns</h2>
+        <ul>
+            <li>
+                <div class="figure">
+                    <img src="images/callback_hell.png" alt="callback hell">
+                </div>
+            </li>
+            <li class="slide cl">Continuation Passing Style</li>
+        </ul>
+    </section>
+
+    <section class="slide" id="async2">
+        <h3>Problems:</h3>
+        <ul>
+            <li>Doing things in <strong>sequence</strong> is hard</li>
+            <li>Doning thisng in <strong>parallel</strong> is harder</li>
+            <li>
+                <div class="figure">
+                    <img src="images/parallel.png" alt="parallel">
+                </div>
+
+            </li>
+            <li class="cl">Error handling is a disaster</li>
+        </ul>
+    </section>
+
+    <section class="slide" id="async3">
+        <h3>Use named function</h3>
+        <div class="figure">
+            <img src="images/named_function.png" alt="named function">
+        </div>
+    </section>
+
+    <section class="slide" id="async4">
+        <h3>Wind.js - 赵劼(Jeffrey Zhao)</h3>
+        <ul>
+            <li>
+                <div class="figure">
+                    <img src="images/windjs.png" alt="windjs">
+                </div>
+            </li>
+            <li class="slide cl">Much better!</li>
+            <li class="slide">Like c# 5.0 async/await keywords, syntax sugar powered by compile tech</li>
+        </ul>
+    </section>
+
+    <section class="slide" id="async5">
+        <h3>Promise and Deferred</h3>
+        <ul>
+            <li>Un-inverts the chain of responsibility: <strong>instead of calling a passed callback, return a promise</strong></li>
+            <li>jQuery 1.5+, $.ajax, $.get, and $.post
+<pre><code>var fetchingData = $.get(url);
+fetchingData.done(doneCallback);
+fetchingData.fail(faildCallback);
+</code></pre>
+</li>
+            <li>
+<pre><code>var aDreamDeferred = new $.Deferred();
+aDreamDeferred.done(function(subject) {
+    console.log('I had the wonderful dream about', subject);
+});
+aDreamDeferred.resolve('the JS event model');
+</code></pre>
+            </li>
+        </ul>
+    </section>
+
+    <section class="slide" id="async6">
+        <ul>
+            <li>
+                A Deferred is a Promise! More
+precisely, it’s a superset of Promise with one critical addition: you can trigger
+a Deferred directly.
+            </li>
+            <li>CommonJS Promises/A spec</li>
+            <li>Q.js, Futures</li>
+            <li>
+                <div class="figure">
+                    <img src="images/q.png" alt="q">
+                </div>
+            </li>
+        </ul>
+    </section>
+
+    <section class="slide" id="async7">
+        <h3>Coroutines</h3>
+        <ul>
+            <li>node-fibers</li>
+            <li><a href="http://wiki.ecmascript.org/doku.php?id=harmony:generators">ECMAScript6(harmony):generators</a>
+            </li>
+            <li>
+                <div class="figure">
+                    <img src="images/harmony_generators.png" alt="harmony generator" style="width: 800px;">
+                </div>
+            </li>
+        </ul>
+    </section>
+
+    <section class="slide" id="async8">
+        <h3>Has to be so complicated?</h3>
+        <ul>
+            <li><strong>async.js</strong>, the most popular control flow helper in node.js community</li>
+            <li>
+                <div class="figure">
+                    <img src="images/asyncjs.png">
+                </div>
+            </li>
+            <li class="cl">What would you do to implement this functionality?</li>
+            <li>No additional concepts, it just works!</li>
+            <li><strong>Different approaches with differnt abstractions, choose what you prefer</strong></li>
+        </ul>
+    </section>
+
+    <section class="slide" id="exception">
+        <h2>How to Handle Exception</h2>
+        <ul>
+            <li class="slide"><red>You can not try catch async handlers</red>
+<pre><code>try {
+    setTimeout(function () {
+        throw new Error('You can not catch me!!!');
+    }, 1000);
+} catch (ex) {
+    console.log(ex);
+}</code></pre></li>
+            <li class="slide">Manully handle, carefully</li>
+            <li class="slide">With helpers mentioned before</li>
+            <li class="slide">Official <strong>Domain</strong> module</li>
+            <li class="slide">process.on('uncaughtException', function (ex) { console.log(ex); });</li>
+        </ul>
+    </section>
+
+    <section class="slide" id="debug">
+        <h2>How to Debug</h2>
+        <ul>
+            <li>Debug is important and debug is an art</li>
+            <li><strong>node --debug</strong> option</li>
+            <li>webkit-dev-tools with node-inspector</li>
+            <li>Logger</li>
+        </ul>
+    </section>
+
+    <section class="slide" id="pitfalls">
+        <h2>Pitfalls</h2>
+        <ul>
+            <li>setTimeout and setInterval
+<pre><code>var start = new Date();
+setTimeout(function(){
+    var end = new Date();
+    console.log('Time elapsed:', end - start, 'ms');
+}, 500);
+while (new Date() - start < 1000) {};
+</code></pre>
+            </li>
+            <li>Implementation by hands is better than third-party modules, in particular scenarios</li>
+        </ul>
+    </section>
+
+<section class="slide" id="everywhere">
+    <h2>JavaScript Everywhere</h2>
+    <ul>
+        <li>Browser side</li>
+        <li>Server side</li>
+        <li>Mobile Platforms: HTML5 APP, Hybrid APP, FirefoxOS</li>
+        <li>Game engines: Unity3D, Cocos2D HTML5</li>
+        <li>Desktops: Win8, GNOME, ChromeOS, WebOS</li>
+        <li>Embeded: MongoDB, CouchBase</li>
+        <li class="slide">Atwood's Law: any application that can be written in JavaScript, will eventually be written in JavaScript. - Jeff Atwood, the founder of stackoverflow.com</li>
+        <li class="slide">JavaScript is not a toy language anymore, it's time to take it seriously</li>
+    </ul>
+</section>
+
+<section class="slide" id="summary">
+    <h2>Summary</h2>
+    <ul>
+        <li>Node.js is gifted at I/O intensive task</li>
+        <li>It also has its downsides and corresponding solutions</li>
+        <li>You may don't use it for now, but may need it some day later, better you know than you don't know</li>
+    </ul>
+</section>
+
+<section class="slide" id="reference">
+    <h2>References</h2>
+    <div style="width: 45%; float: left;">
+        <ul>
+            <li><a href="http://www.infoq.com/cn/articles/nodejs-asynchronous-io">深入浅出Node.js - 田永强</a></li>
+            <li><a href="http://wenku.baidu.com/view/4a4ded7f1711cc7931b71667.html">Node.js异步原理和缺陷 -
+                赵成</a></li>
+            <li><a href="https://speakerdeck.com/kunklejr/node-dot-js-explained">Node.js Explained by Jeff Kunkle</a></li>
+            <li><a href="http://wenku.baidu.com/view/b5ae3cc3bb4cf7ec4afed0a0.html">Node.js在朋友网的实践 -
+                黄友昆</a></li>
+            <li><a href="http://jimbojw.com/fullstack/">Full-stack JavaScript by Jim R. Wilson</a></li>
+            <li><a href="http://www.slideshare.net/domenicdenicola/callbacks-promises-and-coroutines-oh-my-the-evolution-of-asynchronicity-in-javascript">Callbacks, promises and coroutines by Domenic Denicola</a></li>
+        </ul>
+    </div>
+    <div style="width: 45%; float: right;">
+        <ul>
+            <li>UNIX Networking Programming</li>
+            <li>CLR via C#</li>
+            <li>Node.js开发指南</li>
+            <li>Async JavaScript - build more responsive apps with less code</li>
+        </ul>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Thanks!</h2>
+</section>
+
+
+
+
+<!-- deck.navigation snippet -->
+<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+
+<!-- deck.status snippet -->
+<p class="deck-status">
+	<span class="deck-status-current"></span>
+	/
+	<span class="deck-status-total"></span>
+</p>
+
+<!-- deck.goto snippet -->
+<form action="../" method="get" class="goto-form">
+	<label for="goto-slide">Go to slide:</label>
+	<input type="text" name="slidenum" id="goto-slide" list="goto-datalist">
+	<datalist id="goto-datalist"></datalist>
+	<input type="submit" value="Go">
+</form>
+
+<!-- deck.hash snippet -->
+<a href="../" title="Permalink to this slide" class="deck-permalink">#</a>
+
+<script src="../../deck.js/jquery-1.7.2.min.js"></script>
+
+<!-- Deck Core and extensions -->
+<script src="../../deck.js/core/deck.core.js"></script>
+<script src="../../deck.js/extensions/hash/deck.hash.js"></script>
+<script src="../../deck.js/extensions/menu/deck.menu.js"></script>
+<script src="../../deck.js/extensions/goto/deck.goto.js"></script>
+<script src="../../deck.js/extensions/status/deck.status.js"></script>
+<script src="../../deck.js/extensions/navigation/deck.navigation.js"></script>
+<script src="../../deck.js/extensions/scale/deck.scale.js"></script>
+
+<!-- Initialize the deck -->
+<script>
+$(function() {
+	$.deck('.slide');
+});
+</script>
+
+<script src="//controldeck.herokuapp.com/js/controlDeck.deck.js"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-39930568-1', 'inetfuture.com');
+  ga('send', 'pageview');
+</script>
+</body>
+</html>
