@@ -74,6 +74,7 @@ disqus_shortname: inetfutureblog
 plugins:
   - hexo-generator-feed
   - hexo-generator-sitemap
+  - hexo-renderer-discount
 
 theme: light
 exclude_generator:

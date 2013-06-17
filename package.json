@@ -9,6 +9,7 @@
   "dependencies": {
     "hexo-generator-feed": "0.0.10",
     "hexo-generator-sitemap": "0.0.6",
-    "ncp": "~0.4.2"
+    "ncp": "~0.4.2",
+    "hexo-renderer-discount": "0.0.2"
   }
 }
