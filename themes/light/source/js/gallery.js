@@ -1,7 +1,7 @@
 (function($){
   // Caption
   $('.entry').each(function(i){
-    $(this).find('img').each(function(){
+    $(this).find('img').not('.no-fancy').each(function(){
       var alt = this.alt;
 
       if (alt){

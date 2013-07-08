@@ -8,6 +8,7 @@ widgets:
 - category
 - tag
 - recent_posts
+- stackoverflow
 
 excerpt_link: Read More
 
