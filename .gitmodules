@@ -1,0 +1,3 @@
+[submodule "themes/air"]
+	path = themes/air
+	url = git@github.com:inetfuture/hexo-theme-air.git

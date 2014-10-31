@@ -1,1 +1,0 @@
-### My personal blog source codes based on [hexo](https://github.com/tommy351/hexo)

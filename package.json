@@ -1,15 +1,11 @@
 {
-  "name": "hexo",
-  "version": "1.2.3",
+  "name": "inetfuture-blog",
+  "version": "2.8.3",
   "private": true,
-  "engines": {
-    "node": ">= 0.6.0",
-    "npm": ">= 1.1.0"
-  },
   "dependencies": {
-    "hexo-generator-feed": "0.0.10",
-    "hexo-generator-sitemap": "0.0.6",
-    "ncp": "~0.4.2",
-    "hexo-renderer-discount": "0.0.2"
+    "hexo-renderer-ejs": "*",
+    "hexo-renderer-jade": "^0.1.0",
+    "hexo-renderer-marked": "*",
+    "hexo-renderer-stylus": "*"
   }
 }
