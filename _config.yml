@@ -86,4 +86,6 @@ exclude_generator:
 # Deployment
 ## Docs: http://hexo.io/docs/deployment.html
 deploy:
-  type:
+  type: github
+  repository: git@github.com:inetfuture/inetfuture.github.com.git
+  branch: master
