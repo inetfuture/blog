@@ -22,11 +22,11 @@ Then there is Selenium RC, RC as Remote Control. With RC, an HTTP proxy was intr
 
 Here is an architecture diagram:
 
-![rc-architecture.png](/images/selenium-terms-explained/rc-architecture.png)
+{% asset_img rc-architecture.png %}
 
 The proxy also solves the same origin policy restriction, so the Selenium Core and your tests won't have to be hosted in the same server with your application, here is an anatomy:
 
-![rc-anatomy.jpg](/images/selenium-terms-explained/rc-anatomy.jpg)
+{% asset_img rc-anatomy.jpg %}
 
 # Selenium WebDriver
 
@@ -36,7 +36,7 @@ WebDriver uses a very different approach vs JavaScript implementation, it talks 
 
 Here is an architecture diagram:
 
-![webdriver-architecture.jpg](/images/selenium-terms-explained/webdriver-architecture.jpg)
+{% asset_img webdriver-architecture.jpg %}
 
 Basically, bindings send commands across the common WebDriver API with WebDriver wire protocol, on the other side, the driver intercepts those commands and execute them on the actual browser and then returns the result all the way back. 
 
