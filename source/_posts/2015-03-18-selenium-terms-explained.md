@@ -5,6 +5,8 @@ tags: Selenium, Testing
 
 Selenium was pretty confusing for me at the beginning, too many terms, Selenium RC, Selenium WebDriver, RemoteWebDriver, chromedriver, firefoxdriver, Selenium Server, selenium-server-standalone, Selenium Grid, language bindings, etc. So I'll try to explain them from my perspective here, in short, hope it can be helpful to others searching around.
 
+Selenium is a suite of tools to automate web browsers across many platforms, in case of you have never heard of it.
+
 # Selenium RC
 
 Selenium project was started by Jason Huggins in 2004 at ThoughtWorks. 
@@ -32,7 +34,7 @@ The proxy also solves the same origin policy restriction, so the Selenium Core a
 
 Selenium RC served its purpose for several years, but it has a lot shortcomings. simulate the user by JavaScript is not reliable, different browsers or even different versions of the same browser may have different behaviors. Because browser security limitations, some simulation are not even possible, for example, controlling a file input inside a form. This is why WebDriver rises.
 
-WebDriver uses a very different approach vs JavaScript implementation, it talks directly to browsers use the 'native' method for the browser and operating system, so it interacts like a real user without any security restrictions. How the communication made to the browser may vary depends on the browser and os your are using. So for each browser, there is a library as its 'driver', for instance, chromedriver, firefoxdriver, etc.
+WebDriver uses a very different approach vs JavaScript implementation, it talks directly to browsers use the 'native' method for the browser and operating system, so it interacts like a real user without any security restrictions. How the communication made to the browser may vary depends on the browser and os your are using. So for each browser, there is a library as its 'driver', for instance, chromedriver, firefoxdriver, etc, there are even drivers for Android([selendroid](http://selendroid.io/)) and iOS([ios-driver](http://ios-driver.github.io/ios-driver/)).
 
 Here is an architecture diagram:
 
@@ -46,7 +48,9 @@ Speaking of server, drivers often have built in support, means drivers can direc
 
 There is also a Java based Selenium server, it listens for commands, start the driver and transfer those commands to the driver, it's more like a proxy between the two. The benefits of using a Selenium server is that is can manage multiple browsers in different versions and implementations, and it support distributed grid deployment. One server can be run in standalone mode, grid hub mode or grid node mode, where node holds actual works, hub is just a router. 
 
-Nodes can be configured with different capabilities, including browser type, browser version and os type, etc. Then a client using a binding can declare what capabilities it want to use to run its tests, Hub will dispatch the requirements accordingly. Hub and nodes can run on different machines, so it's possible to deploy a grid support both Windows IE and OSX Safari, then all a client needs to know is where the hub is.
+Nodes can be configured with different capabilities, including browser type, browser version and os type, etc. Then a client using a binding can declare what capabilities it want to use to run its tests, grid hub will dispatch the requirements accordingly. Hub and nodes can run on different machines, so it's possible to deploy a grid support both Windows IE and OSX Safari, then all a client needs to know is where the hub is:
+
+{% asset_img grid-architecture.png %}
 
 Communication among these parts may look like this:
 
@@ -67,9 +71,10 @@ By now you have Selenium 2.0 = Selenium 1.0 + WebDriver, Selenium 2.0 use WebDri
 - Selenium WebDriver do the same job RC did in different way, besides the client-server architecture, all kinds of languages bindings, it also includes a set of individual browser drivers.
 - WebDriver Server is the REST interfaces support WebDriver wire protocol, it usually is started by a specific driver. When receiving commands, it executes them on real browser.
 - Selenium Server refers to the Java based application running in standalone, grid node or grid hub mode, which can manage others drivers. It's a bonus, you may not need it to start working.
-- Remote WebDriver means the WebDriver being used remotely through a wire protocol, that's exactly what we have been talking. I guess it can also be used locally as library call, I didn't look into it. 
+- Selenium Grid is a distributed hub-nodes style deployment, with it you can support all kinds of browsers with a single entry, and scale horizontally to handle heavy loads.
+- Remote WebDriver means the WebDriver being used remotely through a wire protocol, that's exactly what we have been talking. I guess it can also be used locally through library call, but I didn't look into it. 
 
-The confusion is, these terms are too similar to each other, and many of them have multiple meanings, but after understanding what they actually are, it should be easy to tell which one is it according to the context.
+The confusion is, these terms are too similar to each other, and many of them have multiple meanings, but after understanding what they actually are, it should be easy to tell which one is it according to the context. Selenium Core, Selenium RC and Selenium WebDriver all can be referred to as Selenium for short, just be aware.
 
 WebDriver and RemoteWebDriver are also used as class/interface names in some language bindings.
 
@@ -77,7 +82,11 @@ Anyway, Selenium RC has been officially deprecated, if you read about it, you ca
 
 # Summary
 
-In this post, I tried to explain those confusing Selenium terms, I'll write another post about how to actually use Selenium for automated testing later.
+In this post, I tried to explain those confusing Selenium terms, hoping it helps somebody.
+
+I have to say, Selenium's architecture is remarkable, bindings and wire protocol are abstracted out perfectly. With this layered design, you can implement your own driver to drive any UI system you want, without losing all those bindings and grid deployment support, etc. It's flexible and easy to extend.
+
+I'll write another post about how to actually use Selenium for automated testing later, including test web apps and mobile apps.
 
 # References
 
