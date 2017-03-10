@@ -1,0 +1,3 @@
+- https://github.com/inetfuture/blog/issues
+- http://inetfuture.github.com 
+- https://slides.com/inetfuture
