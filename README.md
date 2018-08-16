@@ -1,3 +1,4 @@
 - https://github.com/inetfuture/blog/issues
 - http://inetfuture.github.com 
 - https://slides.com/inetfuture
+- https://github.com/inetfuture/technote/blob/master/README.md
